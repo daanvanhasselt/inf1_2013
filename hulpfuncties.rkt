@@ -26,10 +26,13 @@
 
 (provide exporteer-melodie)
 
-
+; melodie is flattened to offer the possibility of entering musical
+;  structures of arbitrary complexity containing only note symbols.
+;  The hierarchy may be visually informative to the composer, but in the end
+;  we export a linear representation of all tree leaves.
 (define (exporteer-melodie melodie [nootlengte 4])
   (cons 'serial
-   (for/list ((note-pitch melodie))
+   (for/list ((note-pitch (flatten melodie)))
      (if (or (equal? note-pitch 'r) (equal? note-pitch 'nap))
        (list 'nap (dotnote nootlengte))
        (list 'note (+ (note-to-number note-pitch) 60) (dotnote nootlengte))))))
