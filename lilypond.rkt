@@ -29,6 +29,7 @@
 (provide lilypond-tempo)
 (provide lilypond-sleutel)
 (provide lilypond-schaal)
+(provide lilypond-instrument)
 (provide schrijf-lilypond-file)
 
 
@@ -48,6 +49,9 @@
   (define tempo 120)
   (define key "c")
   (define keytype "major")
+  (define instrument-specified #f)
+  (define instrument-name "violin")
+  (define instrument "violin")
   (define keynumber 0)
 
   (define major-scales (list
@@ -113,6 +117,11 @@
   (define/public (set-keytype new-keytype)
    (set! keytype new-keytype))
 
+  (define/public (set-instrument new-instrument-name new-instrument)
+   (set! instrument-name new-instrument-name)
+   (set! instrument new-instrument)
+   (set! instrument-specified #t))
+
   (define/public (write-header)
    (fprintf fileport
 "\\version ~s
@@ -132,6 +141,11 @@
     \\tempo 4=~a
     \\key ~a \\~a
     \\clef treble\n" tempo key keytype)
+    (when instrument-specified
+      (fprintf fileport
+        (format "\\set Staff.instrumentName = \"~a\"\n" instrument-name))
+      (fprintf fileport
+        (format "\\set Staff.midiInstrument = #\"~a\"\n" instrument)))
  (parse notes) 
  (fprintf fileport
     "
@@ -250,6 +264,11 @@
   (if (equal? lilygenerator #f)
     (warning-no-lily-object)
     (send lilygenerator set-keytype keytype)))
+
+(define (lilypond-instrument instrument-name instrument)
+  (if (equal? lilygenerator #f)
+    (warning-no-lily-object)
+    (send lilygenerator set-instrument instrument-name instrument)))
 
 (define (schrijf-lilypond-file notes)
   (if (equal? lilygenerator #f)
