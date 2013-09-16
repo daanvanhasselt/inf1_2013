@@ -297,15 +297,20 @@
 
 ; Examples
 ;
-; (define notes '(serial (note 60 4) (note 65 4) (nap 1) (parallel (note 60 4) (note 65 4))))
+; (define notes '(serial
+;  (note 61 8) (note 60 8) (note 67 8) (note 69 8) (note 70 8)
+;  (note 70 8) (note 69 8) (note 70 8) (note 67 8) (note 63 8)
+;  (note 65 8) (note 67 8) (note 63 8) (note 62 8) (note 62 8)
+;  (note 60 8))
 ;
 ; The elaborate way: open a file, specify some props and write it
 ; (begin-nieuwe-lilypond-file "example_1.ly")
-; (lilypond-titel "Mooi liedje")
+; (lilypond-titel "Een en al vrolijkheid")
 ; (lilypond-componist "Marc")
 ; (lilypond-tempo 78)
-; (lilypond-sleutel "e")
+; (lilypond-sleutel "g")
 ; (lilypond-schaal "minor")
+; (lilypond-instrument "guitar" "acoustic guitar (nylon)")
 ; (schrijf-lilypond-file notes)
 ;
 ; The compact way: everything in one function call
