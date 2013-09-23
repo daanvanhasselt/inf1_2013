@@ -17,6 +17,8 @@
 ;
 ; Exports procedures:
 ;  (exporteer-melodie melodie [nootlengte 4])
+;  (transponeer-stamtoon toon afstand)
+;  (transponeer-stamtonen lst afstand)
 ;
 ; Examples: at end of file
 ;
@@ -25,6 +27,8 @@
 #lang racket
 
 (provide exporteer-melodie)
+(provide transponeer-stamtoon)
+(provide transponeer-stamtonen)
 
 ; melodie is flattened to offer the possibility of entering musical
 ;  structures of arbitrary complexity containing only note symbols.
@@ -55,7 +59,30 @@
    (if (not result) (vector-member note lowered-names)
        result)))
 
-; examples
-; (exporteer-melodie '(des c g a bes bes a bes g es f g es d d c) 8)
+;
+; symbolic transpose of natural note (one note only)
+;
+(define (transponeer-stamtoon toon afstand)
+  (let* ((stamtonen (vector 'c 'd 'e 'f 'g 'a 'b))
+        (ref (vector-member toon stamtonen)))
+     (if (not ref) #f ; not found
+        (vector-ref stamtonen (modulo (+ ref afstand) (vector-length stamtonen))))))
 
+; symbolic transpose of a list of natural notes
+(define (transponeer-stamtonen lst afstand)
+  (if (empty? lst) '()
+      (cons (transponeer-stamtoon (car lst) afstand) (transponeer-stamtonen (cdr lst) afstand))))
+
+;
+; examples
+;
+; (exporteer-melodie '(des c g a bes bes a bes g es f g es d d c) 8)
+;
+; (transponeer-stamtoon 'c 0)
+; (transponeer-stamtoon 'c 1)
+; (transponeer-stamtoon 'c 8)
+; (transponeer-stamtoon 'e 2)
+; (transponeer-stamtoon 'e -1)
+; (transponeer-stamtoon 'e -9)
+; (transponeer-stamtoon 'k 2) ; returns #f because 'k is not found
 
