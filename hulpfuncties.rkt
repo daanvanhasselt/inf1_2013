@@ -65,8 +65,10 @@
 (define (transponeer-stamtoon toon afstand)
   (let* ((stamtonen (vector 'c 'd 'e 'f 'g 'a 'b))
         (ref (vector-member toon stamtonen)))
-     (if (not ref) #f ; not found
-        (vector-ref stamtonen (modulo (+ ref afstand) (vector-length stamtonen))))))
+     (if (equal? toon 'r) 'r
+       (if (not ref) #f ; not found
+        (vector-ref stamtonen (modulo (+ ref afstand) (vector-length
+	stamtonen)))))))
 
 ; symbolic transpose of a list of natural notes
 (define (transponeer-stamtonen lst afstand)
