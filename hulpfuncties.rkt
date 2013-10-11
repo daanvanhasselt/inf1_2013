@@ -34,12 +34,22 @@
 ;  structures of arbitrary complexity containing only note symbols.
 ;  The hierarchy may be visually informative to the composer, but in the end
 ;  we export a linear representation of all tree leaves.
+;
+; note lengths are:
+;  - all equal to nootlengte if nootlengte is a number
+;  - taken from nootlengte if nootlengte is a list
 (define (exporteer-melodie melodie [nootlengte 4])
+  (define list-of-length
+    (cond ((number? nootlengte) (for/list ((i (length melodie))) nootlengte))
+          ((list? nootlengte)
+	     (if (= (length nootlengte) (length melodie)) nootlengte ; use the list
+                 (error "Aantal lengtewaarden moet gelijk zijn aan aantal noten")))
+          (else (error "Nootlengte heeft onbekend type"))))
   (cons 'serial
-   (for/list ((note-pitch (flatten melodie)))
+   (for/list ((note-pitch (flatten melodie)) (note-length list-of-length))
      (if (or (equal? note-pitch 'r) (equal? note-pitch 'nap))
-       (list 'nap (dotnote nootlengte))
-       (list 'note (+ (note-to-number note-pitch) 60) (dotnote nootlengte))))))
+       (list 'nap (dotnote note-length))
+       (list 'note (+ (note-to-number note-pitch) 60) (dotnote note-length))))))
    
 
 ; dotnote is used for dotted notes which have a duration of 3/2 times the
