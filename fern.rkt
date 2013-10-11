@@ -1,3 +1,23 @@
+;********************************************************************
+;                  Hogeschool voor de Kunsten Utrecht
+;                       Hilversum, the Netherlands
+;********************************************************************
+;
+; File name	: fern.rkt
+; System name	: INF
+;
+; Description   : Iterated Function System - Fern implementation
+;
+; Authors       : Marc Groenewegen
+; E-mail        : marc.groenewegen@kmt.hku.nl
+;
+;*********************************************************************
+;
+; Description of the algorihm is taken from:
+;  http://en.wikipedia.org/wiki/Barnsley_fern
+;
+;*********************************************************************
+
 #lang racket
 
 (require racket/draw)
@@ -7,7 +27,6 @@
 (send dc clear)
 (send dc set-pen (make-color 0 100 0) 1 'solid)
 
-; http://en.wikipedia.org/wiki/Barnsley_fern
 ;
 ; The first point is 0,0
 ; New points are iteratively computed by randomly applying one of the
