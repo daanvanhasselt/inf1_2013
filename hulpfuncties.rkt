@@ -40,9 +40,9 @@
 ;  - taken from nootlengte if nootlengte is a list
 (define (exporteer-melodie melodie [nootlengte 4])
   (define list-of-length
-    (cond ((number? nootlengte) (for/list ((i (length melodie))) nootlengte))
+    (cond ((number? nootlengte) (for/list ((i (length (flatten melodie)))) nootlengte))
           ((list? nootlengte)
-	     (if (= (length nootlengte) (length melodie)) nootlengte ; use the list
+	     (if (= (length nootlengte) (length (flatten melodie))) nootlengte ; use the list
                  (error "Aantal lengtewaarden moet gelijk zijn aan aantal noten")))
           (else (error "Nootlengte heeft onbekend type"))))
   (cons 'serial
