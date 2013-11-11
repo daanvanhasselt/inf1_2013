@@ -29,6 +29,9 @@
 (provide exporteer-melodie)
 (provide transponeer-stamtoon)
 (provide transponeer-stamtonen)
+(provide speel)
+
+(require racket/gui/base) ; needed for play-sound
 
 ; melodie is flattened to offer the possibility of entering musical
 ;  structures of arbitrary complexity containing only note symbols.
@@ -84,6 +87,11 @@
 (define (transponeer-stamtonen lst afstand)
   (if (empty? lst) '()
       (cons (transponeer-stamtoon (car lst) afstand) (transponeer-stamtonen (cdr lst) afstand))))
+
+
+; use built-in play-sound in blocking (non-async) mode
+(define (speel audiofile)
+  (play-sound audiofile #f))
 
 ;
 ; examples
