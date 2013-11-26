@@ -29,9 +29,17 @@
 (provide exporteer-melodie)
 (provide transponeer-stamtoon)
 (provide transponeer-stamtonen)
+;
 (provide speel)
+;
+(provide display-tijd)
+(provide uur)
+(provide minuten)
+(provide seconden)
 
 (require racket/gui/base) ; needed for play-sound
+(require racket/date) ; needed for date/time functions
+
 
 ; melodie is flattened to offer the possibility of entering musical
 ;  structures of arbitrary complexity containing only note symbols.
@@ -89,12 +97,43 @@
       (cons (transponeer-stamtoon (car lst) afstand) (transponeer-stamtonen (cdr lst) afstand))))
 
 
+;---------------------------- Sound File
+
 ; use built-in play-sound in blocking (non-async) mode
 (define (speel audiofile)
   (play-sound audiofile #f))
 
+;---------------------------- Date/time
+
+(define (display-list lst)
+  (if (empty? lst) (void)
+     (begin
+       (display (car lst))
+       (display-list (cdr lst)))))
+
+(define (display-tijd h m s)
+  (define multidisplay (lambda lst (display-list lst)))
+  (multidisplay (~a h #:width 2 #:align 'right #:pad-string "0")
+        ":"
+        (~a m #:width 2 #:align 'right #:pad-string "0")
+        ":"
+        (~a s #:width 2 #:align 'right #:pad-string "0")
+        "\n"))
+
+(define (uur)
+  (define now (current-date))
+ (date-hour now))
+
+(define (minuten)
+  (define now (current-date))
+ (date-minute now))
+
+(define (seconden)
+  (define now (current-date))
+ (date-second now)) 
+
 ;
-; examples
+;---------------------------- Examples
 ;
 ; (exporteer-melodie '(des c g a bes bes a bes g es f g es d d c) 8)
 ;
